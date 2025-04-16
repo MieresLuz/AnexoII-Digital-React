@@ -1,0 +1,217 @@
+/* Variables Globales */
+:root {
+    --primary-color: #5b7594;
+    --secondary-color: #404040;
+    --background-color: #c2c3c3;
+    --color-green: #37ff00;
+    --color-red: #ff0000;
+    --color-button: #fdffff;
+    --color-black: #000;
+    --button-bg: var(--primary-color);
+    --button-hover-bg: var(--secondary-color);
+    --dropdown-bg: var(--primary-color);
+    --dropdown-link-color: #000;
+    --dropdown-link-hover-color: #fff;
+}
+
+/* Estilos de Contenedores de Formularios */
+.anexo-fieldset {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.anexo-legend {
+    font-weight: 600;
+    padding: 0 15px;
+    color: #343a40;
+    font-size: 1.1em;
+}
+
+/* Etiquetas de los campos de formulario */
+.anexo-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #343a40;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+/* Estilos de los campos de formulario */
+.anexo-input[type="text"],
+.anexo-input[type="email"],
+.anexo-select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1em;
+    color: #495057;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.anexo-input[type="text"]:focus,
+.anexo-input[type="email"]:focus,
+.anexo-select:focus {
+    border-color: #007bff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Botones */
+.anexo-button {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.anexo-button:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.anexo-button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+/* Estilos de las Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    vertical-align: top;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Estilos de Confirmación */
+.confirmation {
+    border: 2px solid #28a745;
+    padding: 25px;
+    margin-top: 25px;
+    background-color: #e7f8ec;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.confirmation h2 {
+    color: #28a745;
+    margin-top: 0;
+    font-weight: 600;
+}
+
+/* Estilos para el Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9986;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    cursor: pointer;
+}
+
+/* Estilos de las Materias en el Modal */
+ul {
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+li {
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Estilo para los items de las materias */
+.materia-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.materia-item label {
+    margin-left: 10px;
+}
+
+/* Estilo para el Formulario de Acciones */
+.form-actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Estilo para las Etiquetas y Campos de Materias */
+.anexo-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.anexo-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+select {
+    background: none;
+    color: black;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}

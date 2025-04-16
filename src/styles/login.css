@@ -1,0 +1,154 @@
+.container {
+    background-color: rgba(255, 255, 255, 0.556);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    opacity: 0.8;
+    /* 0 = completamente transparente, 1 = completamente opaco */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1da1f2;
+}
+
+.login-input,
+.login-button {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0c85d0;
+}
+
+#logo {
+
+    display: block;
+    top: 20px;
+    margin: 0 auto;
+    max-width: 150px;
+    width: 100%;
+}
+
+.tacuara {
+    align-items: center;
+}
+
+.image-tacuara {
+    max-width: 30%;
+    height: auto;
+
+}
+
+.options {
+    text-align: center;
+    margin-top: 20px;
+
+}
+
+.options a {
+    color: #1da1f2;
+    /* Color azul de Twitter */
+    text-decoration: none;
+
+
+}
+
+.options a:hover {
+    text-decoration: underline;
+
+}
+
+.social-login {
+    margin-top: 20px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    display: inline-block;
+    /* Para que el contenedor se ajuste al tamaño del logo */
+
+}
+
+.social-icons a {
+    margin: 0 10px;
+
+}
+
+.social-icons img {
+    width: 60px;
+    /* Ajusta el tamaño de los iconos */
+    height: auto;
+    border-radius: 100%;
+    height: auto;
+    /* Mantiene la proporción del logo */
+    transition: transform 0.4s ease;
+    /* Transición suave */
+}
+
+.social-icons img:hover {
+
+    transform: scale(1.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 1, 0.2);
+    /* Agrega una sombra */
+
+}
+
+.error {
+    color: red;
+    font-size: 0.85rem;
+    margin: 4px 0 10px 0;
+}
+
+.modal-login {
+    position: fixed;
+    top: 250px;
+    left: 27%;
+    width: 650px;
+    height: 300px;
+    background-color: rgb(255 255 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 9986;
+    flex-direction: column;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.5); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
