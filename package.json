@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build && npm run copy-to-backend",
-    "copy-to-backend": "rmdir /S /Q \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\" && mkdir \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\" && xcopy /E /I /Y dist\\* \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\"",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+ "scripts": {
+  "dev": "vite",
+  "build": "vite build && npm run copy-to-backend",
+  "copy-to-backend": "xcopy /E /I /Y dist\\* \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\"",
+  "lint": "eslint .",
+  "preview": "vite preview"
+},
+
   "dependencies": {
     "axios": "^1.8.4",
     "emailjs-com": "^3.2.0",
