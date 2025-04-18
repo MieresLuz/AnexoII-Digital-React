@@ -401,7 +401,7 @@ const RegistroComponent = () => {
     if (rol === 'admin') delete payload.legajo;
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register', payload, {
+      const response = await axios.post('https://anexoii-digital-backend.onrender.com/api/auth/register', payload, {
         headers: { 'Content-Type': 'application/json' }
       });
 

@@ -423,7 +423,7 @@ const AnexoIIComponent = () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get('http://localhost:8080/api/auth/current', {
+                    const response = await axios.get('https://anexoii-digital-backend.onrender.com/api/auth/current', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
 
@@ -511,14 +511,14 @@ const AnexoIIComponent = () => {
 
             // 1️⃣ Verificar si ya está inscripto
             const response = await axios.get(
-                `http://localhost:8080/api/inscripciones/existe/${dni}`,
+                `https://anexoii-digital-backend.onrender.com/api/inscripciones/existe/${dni}`,
                 config
             );
             const yaInscripto = response.data.existe;
 
             if (yaInscripto) {
                 const inscResponse = await axios.get(
-                    `http://localhost:8080/api/inscripciones/existe/${dni}`,
+                    `https://anexoii-digital-backend.onrender.com/api/inscripciones/existe/${dni}`,
                     config
                 );
 
@@ -553,7 +553,7 @@ const AnexoIIComponent = () => {
 
             // 4️⃣ Enviar inscripción al backend
             await axios.post(
-                'http://localhost:8080/api/inscripciones/registrar',
+                'https://anexoii-digital-backend.onrender.com/api/inscripciones/registrar',
                 {
                     dni,
                     numeroTramite: numero.toString(),

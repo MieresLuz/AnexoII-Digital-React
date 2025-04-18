@@ -21,7 +21,7 @@ const LoginComponent = () => {
 
     try {
       // Paso 1: Login
-      const loginResponse = await axios.post('http://localhost:8080/api/auth/login', data, {
+      const loginResponse = await axios.post('https://anexoii-digital-backend.onrender.com/api/auth/login', data, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -31,7 +31,7 @@ const LoginComponent = () => {
       localStorage.setItem('token', token);
 
       // Paso 2: Obtener datos del usuario actual
-      const currentUserResponse = await axios.get('http://localhost:8080/api/auth/current', {
+      const currentUserResponse = await axios.get('https://anexoii-digital-backend.onrender.com/api/auth/current', {
         headers: {
           Authorization: `Bearer ${token}`
         }
