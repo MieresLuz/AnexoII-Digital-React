@@ -419,10 +419,10 @@ const RegistroComponent = () => {
 
   return (
     <div className="container">
+      <h1 className="titulo">Registro en Anexo II Digital</h1>
       <div className="tacuara">
         <img className="image-tacuara" src="logo-anexoII-digital.png" alt="logo" id="logo-anexoII-digital" />
       </div>
-      <h1 className="titulo">Registro en Anexo II Digital</h1>
       <p>Para regresar al panel de ingreso <Link to="/">Login</Link></p>
 
       <form onSubmit={handleSubmit}>

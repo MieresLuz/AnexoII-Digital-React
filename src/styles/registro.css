@@ -14,14 +14,17 @@
 }
 
 .container {
-    display: block;
-    background-color: rgba(255, 255, 255, 0.366);
+    background-color: rgba(255, 255, 255, 0.556);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 85%;
     opacity: 0.8;
-    /* 0 = completamente transparente, 1 = completamente opaco */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .container p {
@@ -68,7 +71,10 @@ h1 {
 
 .tacuara {
     align-items: center;
-
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-tacuara {
@@ -88,9 +94,9 @@ h1 {
 
 .modal-registro {
     position: fixed;
-    top: 250px;
-    left: 27%;
-    width: 650px;
+    left: 2.4%;
+    width: 300px;
+    top: 110px;
     height: 300px;
     background-color: rgb(255 255 255);
     display: flex;
@@ -123,12 +129,14 @@ h1 {
 }
 
 .modal-body {
-    font-size: 20px;
+    font-size: 14px;
+    display: flex;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 70%;
     font-weight: bold;
+    text-align: center;
 }
 
 .modal-button {
@@ -145,4 +153,62 @@ h1 {
 
 .modal-button:hover {
     background-color: var(--secondary-color);
+}
+
+@media screen and (min-width: 375px) and (max-width: 424px) {
+    .modal-registro {
+      left: 9.5%;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px) {
+    .modal-registro {
+        left: 9.5%;
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .modal-registro {
+        left: 21.5%;
+        width: 60%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .modal-registro {
+        left: 23.5%;
+        width: 50%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2559px) {
+    .modal-registro {
+        left: 30.5%;
+        width: 38%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 2560px) and (max-width: 3749px) {
+    .modal-registro {
+        left: 38.5%;
+        width: 25%;
+        top: 400px;
+    }
+
+    .container{
+        width: 50%;
+    }
 }

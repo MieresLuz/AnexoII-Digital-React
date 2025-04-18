@@ -3,8 +3,13 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 85%;
     opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     /* 0 = completamente transparente, 1 = completamente opaco */
 }
 
@@ -45,6 +50,10 @@ h1 {
 }
 
 .tacuara {
+    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -118,9 +127,9 @@ h1 {
 
 .modal-login {
     position: fixed;
-    top: 250px;
-    left: 27%;
-    width: 650px;
+    left: 2.4%;
+    width: 300px;
+    top: 110px;
     height: 300px;
     background-color: rgb(255 255 255);
     display: flex;
@@ -131,20 +140,47 @@ h1 {
     flex-direction: column;
     border-radius: 20px;
     border: 1px solid black;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.modal-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
+.modal-content-login {
+    font-size: 14px;
+    display: flex;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    font-weight: bold;
     text-align: center;
+}
+
+.login-button{
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.login-button:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.login-button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
 
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     /* background: rgba(0, 0, 0, 0.5); */
     display: flex;
@@ -152,3 +188,62 @@ h1 {
     justify-content: center;
     z-index: 999;
 }
+
+@media screen and (min-width: 375px) and (max-width: 424px) {
+    .modal-login {
+      left: 9.5%;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px) {
+    .modal-login {
+        left: 9.5%;
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .modal-login {
+        left: 21.5%;
+        width: 60%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .modal-login {
+        left: 23.5%;
+        width: 50%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2559px) {
+    .modal-login {
+        left: 30.5%;
+        width: 38%;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 2560px) and (max-width: 3749px) {
+    .modal-login {
+        left: 38.5%;
+        width: 25%;
+        top: 400px;
+    }
+
+    .container{
+        width: 50%;
+    }
+}
+  

@@ -61,8 +61,8 @@ h1 {
     background: var(--primary-color);
     border: none;
     position: absolute;
-    right: 55px;
-    top: 2px;
+    right: 0px;
+    top: 407px;
 
 }
 
@@ -73,22 +73,22 @@ h1 {
 }
 
 .profile-section button img {
-    height: 296px;
-    width: 296px;
+    height: 90px;
+    width: 90px;
     object-fit: cover;
     background: none;
 }
 
 .profile-modal {
     position: absolute;
-    top: 0px;
-    right: 60px;
+    top: 500px;
+    right: 0px;
     z-index: 9999;
-    background: var(--primary-color);
+    background: #5b7594c9;
     color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    width: 300px;
+    width: 320px;
     height: 500px;
 }
 
@@ -121,6 +121,12 @@ h1 {
     top: 1px;
     left: 1px;
 
+}
+
+.image-message{
+    position: absolute;
+    top: 14px;
+    left: 85px;
 }
 
 .mini-profile-pic {

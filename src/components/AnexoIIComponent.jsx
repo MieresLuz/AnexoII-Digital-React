@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/anexoIIComponent.css';
 import axios from 'axios';
 import jsPDF from 'jspdf';
@@ -28,11 +29,62 @@ const AnexoIIComponent = () => {
         exito: false
     });
 
+    const [modalCorreoExito, setModalCorreoExito] = useState(false);
+    const [modalPDFExito, setModalPDFExito] = useState(false);
+
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    const [modalExpiracionVisible, setModalExpiracionVisible] = useState(false);
+    const navigate = useNavigate();
+
+    const [inscripcionExistente, setInscripcionExistente] = useState(false);
+    const [tramiteExistente, setTramiteExistente] = useState(null);
+
+
+    useEffect(() => {
+        const checkSession = () => {
+            const loginTime = parseInt(localStorage.getItem('loginTime'), 10);
+            const now = Date.now();
+            const sixtySeconds = 3600 * 1000;
+
+            if (loginTime && now - loginTime > sixtySeconds) {
+                // Expiró la sesión
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('loginTime');
+                setModalExpiracionVisible(true);
+            }
+        };
+
+        const interval = setInterval(checkSession, 1000); // revisa cada segundo
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleExpiracionAceptar = () => {
+        setModalExpiracionVisible(false);
+        navigate('/login');
+    };
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 767); // consideramos móviles hasta 768px
+        };
+
+        handleResize(); // correr al montar
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+
     const [numeroTramite, setNumeroTramite] = useState(null);
 
     const [departamentos, setDepartamentos] = useState([]);
     const [institutos, setInstitutos] = useState([]);
     const [carreras, setCarreras] = useState([]);
+
 
     const datos = [
         {
@@ -365,6 +417,7 @@ const AnexoIIComponent = () => {
         }
 
     ];
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -373,8 +426,10 @@ const AnexoIIComponent = () => {
                     const response = await axios.get('http://localhost:8080/api/auth/current', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
+
                     const usuario = response.data;
 
+                    // 👇 Solo se cargan datos del usuario, sin verificar inscripción
                     const dep = datos.find(d => d.departamento === usuario.departamento);
                     const inst = dep?.institutos.find(i => i.nombre === usuario.instituto);
                     const car = inst?.carreras.find(c => c.nombre === usuario.carrera);
@@ -404,26 +459,21 @@ const AnexoIIComponent = () => {
     }, []);
 
     useEffect(() => {
-        if (formData.anioCursada) {
-            const dep = datos.find(d => d.departamento === formData.departamento);
-            const inst = dep?.institutos.find(i => i.nombre === formData.instituto);
+        console.log("Año de cursada seleccionado:", formData.anioCursada);
 
-            // Si se selecciona "todos", mostramos todas las materias sin filtrar por año
-            const materiasFiltradas = formData.anioCursada === 'todos'
-                ? inst?.materias.filter(m => m.carrera === formData.carrera) || []
-                : inst?.materias.filter(
-                    m => m.carrera === formData.carrera && m.anio === parseInt(formData.anioCursada)
-                ) || [];
+        const dep = datos.find(d => d.departamento === formData.departamento);
+        const inst = dep?.institutos.find(i => i.nombre === formData.instituto);
 
-            console.log(materiasFiltradas);  // Añadir console.log para verificar las materias filtradas
+        const materiasFiltradas = formData.anioCursada === 'todos'
+            ? inst?.materias.filter(m => m.carrera === formData.carrera) || []
+            : inst?.materias.filter(
+                m => m.carrera === formData.carrera && m.anio === parseInt(formData.anioCursada)
+            ) || [];
 
-            setMaterias(materiasFiltradas);
-        } else {
-            setMaterias([]);  // Limpiar las materias si no hay selección de año
-        }
+        console.log("Materias filtradas:", materiasFiltradas);
+
+        setMaterias(materiasFiltradas);
     }, [formData.anioCursada, formData.departamento, formData.instituto, formData.carrera]);
-
-
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -448,16 +498,84 @@ const AnexoIIComponent = () => {
         setModales({ advertencia: false, confirmacion: true, exito: false });
     };
 
-    const confirmarInscripcion = () => {
-        setModales({ advertencia: false, confirmacion: false, exito: true });
+    const confirmarInscripcion = async () => {
+        try {
+            const dni = formData.dni;
+            const token = localStorage.getItem('token');
 
-        // Guardamos en ventana global para PDF/correo
-        const materiasInfo = materias.filter(m => materiasSeleccionadas.includes(m.codigo));
-        window.__tramiteActual = {
-            numeroTramite,
-            usuario: formData,
-            materias: materiasInfo
-        };
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+
+            // 1️⃣ Verificar si ya está inscripto
+            const response = await axios.get(
+                `http://localhost:8080/api/inscripciones/existe/${dni}`,
+                config
+            );
+            const yaInscripto = response.data.existe;
+
+            if (yaInscripto) {
+                const inscResponse = await axios.get(
+                    `http://localhost:8080/api/inscripciones/existe/${dni}`,
+                    config
+                );
+
+                const numero = inscResponse.data.numeroTramite || numeroTramite;
+
+                setNumeroTramite(numero);
+                setInscripcionExistente(true);
+                setTramiteExistente({
+                    numeroTramite: numero,
+                    usuario: formData,
+                    materias: materias.filter(m => materiasSeleccionadas.includes(m.codigo)) // o traer del backend si es necesario
+                });
+
+                // También guardar para que PDF funcione
+                window.__tramiteActual = {
+                    numeroTramite: numero,
+                    usuario: formData,
+                    materias: materias.filter(m => materiasSeleccionadas.includes(m.codigo))
+                };
+
+                return;
+            }
+
+
+            // 2️⃣ Obtener materias seleccionadas completas
+            const materiasInfo = materias.filter(m => materiasSeleccionadas.includes(m.codigo));
+            const codigosMaterias = materiasInfo.map(m => m.codigo);
+
+            // 3️⃣ Crear número de trámite si aún no fue generado
+            const numero = numeroTramite || Math.floor(Math.random() * 1000000);
+            setNumeroTramite(numero);
+
+            // 4️⃣ Enviar inscripción al backend
+            await axios.post(
+                'http://localhost:8080/api/inscripciones/registrar',
+                {
+                    dni,
+                    numeroTramite: numero.toString(),
+                    materias: codigosMaterias
+                },
+                config
+            );
+
+            // 5️⃣ Guardar en variable global para PDF y correo
+            window.__tramiteActual = {
+                numeroTramite: numero,
+                usuario: formData,
+                materias: materiasInfo
+            };
+
+            // 6️⃣ Mostrar modal de éxito
+            setModales({ advertencia: false, confirmacion: false, exito: true });
+
+        } catch (error) {
+            console.error("❌ Error al confirmar inscripción", error);
+            alert("Ocurrió un error al confirmar la inscripción. Intentalo de nuevo.");
+        }
     };
 
     const generarPDF = () => {
@@ -466,7 +584,7 @@ const AnexoIIComponent = () => {
 
         const doc = new jsPDF();
         doc.setFontSize(12);
-        const maxWidth = 170; // Ajusta según márgenes
+        const maxWidth = 170;
 
         doc.text("Constancia de Inscripción - Anexo II", 20, 20);
         doc.text(`Número de Trámite: ${tramite.numeroTramite}`, 20, 30);
@@ -488,12 +606,8 @@ const AnexoIIComponent = () => {
                 `- Formato: ${m.formato}`,
             ];
 
-            // Calcular el alto total del bloque (aproximado)
             const lineHeight = 10;
-            const lineCount = bloque.reduce((acc, text) => {
-                const lines = doc.splitTextToSize(text, maxWidth).length;
-                return acc + lines;
-            }, 0);
+            const lineCount = bloque.reduce((acc, text) => acc + doc.splitTextToSize(text, maxWidth).length, 0);
 
             if (y + lineCount * lineHeight > 280) {
                 doc.addPage();
@@ -506,11 +620,13 @@ const AnexoIIComponent = () => {
                 y += lines.length * lineHeight;
             });
 
-            y += 5; // Espacio entre materias
+            y += 5;
         });
 
         doc.save(`inscripcion_${tramite.numeroTramite}.pdf`);
+        setModalPDFExito(true); // ✅ Mostrar nuevo modal
     };
+
 
 
     const handleEnviarCorreo = () => {
@@ -519,18 +635,6 @@ const AnexoIIComponent = () => {
             alert("No hay datos para enviar.");
             return;
         }
-
-        const materiasTexto = tramite.materias.map((m, index) => (
-            `Materia ${index + 1}:\n` +
-            `Nombre: ${m.nombre}\n` +
-            `Código: ${m.codigo || 'No especificado'}\n` +
-            `Régimen: ${m.regimen || 'No especificado'}\n` +
-            `Año Académico: ${m.anio || 'No especificado'}\n` +
-            `Correlativas: ${m.correlativas || 'No especificado'}\n` +
-            `Carrera: ${m.carrera || 'No especificado'}\n` +
-            `Instituto: ${tramite.usuario.instituto || 'No especificado'}\n` +
-            `Formato: ${m.formato || 'No especificado'}\n`
-        )).join('\n');
 
         const templateParams = {
             nombre_completo: `${tramite.usuario.nombre} ${tramite.usuario.apellido}`,
@@ -558,19 +662,48 @@ const AnexoIIComponent = () => {
         )
             .then((response) => {
                 console.log("✅ Correo enviado exitosamente", response);
-                setModales({ ...modales, confirmacion: false, exito: true }); // Mostrar modal de éxito
+                setModalCorreoExito(true); // Mostrar nuevo modal
             })
             .catch((error) => {
                 console.error("❌ Error al enviar correo", error);
                 alert("Hubo un error al enviar el correo. Inténtalo de nuevo.");
             });
+
     };
 
+    const handleGenerarPDFDesdeModal = () => {
+        generarPDF(); // Genera y descarga el PDF
+
+        // Cerramos el modal actual primero
+        setInscripcionExistente(false);
+
+        // Abrimos el modal de éxito del PDF con un pequeño delay
+        setTimeout(() => {
+            setModalPDFExito(true);
+        }, 300); // 300ms suele ser suficiente para el cierre visual
+    };
+
+    const handleCerrarPDFExito = () => {
+    setModalPDFExito(false);
+    setModales(prev => ({
+        ...prev,
+        confirmacion: false,
+        exito: false
+    }));
+    setInscripcionExistente(false); // También cerramos el modal de "ya estás inscripto", por si está abierto
+};
 
 
 
     return (
         <div className="anexo-fieldset">
+            {inscripcionExistente && (
+                <div className="mensaje-inscripto">
+                    <h3>Ya estás inscripto 📌</h3>
+                    <p>No podés volver a inscribirte. Si creés que esto es un error, contactá a la institución.</p>
+                </div>
+            )}
+
             <h2>Formulario de Inscripción</h2>
             <form className="anexoII-form">
                 <div className="anexo-legend">
@@ -636,35 +769,63 @@ const AnexoIIComponent = () => {
                 {/* Mostrar tabla de materias cuando se filtren */}
                 <div id="materiasContainer">
                     <h3>Materias disponibles</h3>
-                    <table border="1" id="tablaMaterias">
-                        <thead>
-                            <tr>
-                                <th>Inscribir</th>
-                                <th>Código</th>
-                                <th>Nombre de la Materia</th>
-                                <th>Correlativas</th>
-                                <th>Año de Cursada</th>
-                                <th>Carrera</th>
-                                <th>Instituto</th>
-                                <th>Formato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {materias.map(materia => (
-                                <tr key={materia.codigo}>
-                                    <td><input type="checkbox" value={materia.codigo} onChange={() => toggleMateria(materia.codigo)} /></td>
-                                    <td>{materia.codigo}</td>
-                                    <td>{materia.nombre}</td>
-                                    <td>{materia.correlativas === "Ninguna" ? "Ninguna" : materia.correlativas}</td>
-                                    {/* Modificación aquí: Si se seleccionó "todos", mostramos el año de cada materia */}
-                                    <td>{formData.anioCursada === 'todos' ? `${materia.anio}º` : `${formData.anioCursada}º`}</td>
-                                    <td>{formData.carrera}</td>
-                                    <td>{formData.instituto}</td>
-                                    <td>{materia.formato}</td>
-                                </tr>
+
+                    {isMobile ? (
+                        <ul className="materias-list">
+                            {materias.map((materia) => (
+                                <li key={materia.codigo} className="materia-item">
+
+                                    <div>
+                                        <div className='check-nom-mat'>
+                                            <input
+                                                type="checkbox"
+                                                value={materia.codigo}
+                                                onChange={() => toggleMateria(materia.codigo)}
+                                            />
+                                            <strong>{materia.nombre}</strong><br />
+                                        </div>
+                                        Código: {materia.codigo}<br />
+                                        Correlativas: {materia.correlativas}<br />
+                                        Año: {materia.anio}º<br />
+                                        Carrera: {materia.carrera}<br />
+                                        Instituto: {formData.instituto}<br />
+                                        Formato: {materia.formato}
+                                    </div>
+                                </li>
                             ))}
-                        </tbody>
-                    </table>
+                        </ul>
+                    ) : (
+                        <div className="tabla-scroll">
+                            <table className="anexo-table" id="tablaMaterias" border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Inscribir</th>
+                                        <th>Código</th>
+                                        <th>Nombre de la Materia</th>
+                                        <th>Correlativas</th>
+                                        <th>Año de Cursada</th>
+                                        <th>Carrera</th>
+                                        <th>Instituto</th>
+                                        <th>Formato</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {materias.map((materia) => (
+                                        <tr key={materia.codigo}>
+                                            <td><input className='check-table' type="checkbox" value={materia.codigo} onChange={() => toggleMateria(materia.codigo)} /></td>
+                                            <td>{materia.codigo}</td>
+                                            <td>{materia.nombre}</td>
+                                            <td>{materia.correlativas}</td>
+                                            <td>{formData.anioCursada === 'todos' ? `${materia.anio}º` : `${formData.anioCursada}º`}</td>
+                                            <td>{formData.carrera}</td>
+                                            <td>{formData.instituto}</td>
+                                            <td>{materia.formato}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
 
                 {/* Términos y Condiciones */}
@@ -676,15 +837,18 @@ const AnexoIIComponent = () => {
                 </div>
 
                 {/* Botón para mostrar confirmación */}
-                <div className="form-actions">
-                    <button className='anexo-button'
-                        type="button"
-                        disabled={!formData.aceptaTerminos || materiasSeleccionadas.length === 0}
-                        onClick={mostrarConfirmacion}
-                    >
-                        Confirmar Inscripción
-                    </button>
-                </div>
+                {!inscripcionExistente && (
+                    <div className="form-actions">
+                        <button className='anexo-button'
+                            type="button"
+                            disabled={!formData.aceptaTerminos || materiasSeleccionadas.length === 0}
+                            onClick={mostrarConfirmacion}
+                        >
+                            Confirmar Inscripción
+                        </button>
+                    </div>
+                )}
+
             </form>
 
             {/* Modal de Advertencia */}
@@ -704,8 +868,10 @@ const AnexoIIComponent = () => {
                     <div className="modal-content">
                         <h3>Confirmación</h3>
                         <p>¿Estás seguro de que deseas confirmar tu inscripción?</p>
-                        <button className='anexo-button' onClick={confirmarInscripcion}>Sí, Confirmar</button>
-                        <button className='anexo-button' onClick={() => setModales({ ...modales, confirmacion: false })}>Cancelar</button>
+                        <div className='modal-buttons'>
+                            <button className='anexo-button' onClick={confirmarInscripcion}>Sí, Confirmar</button>
+                            <button className='anexo-button' onClick={() => setModales({ ...modales, confirmacion: false })}>Cancelar</button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -713,17 +879,66 @@ const AnexoIIComponent = () => {
             {modales.exito && (
                 <div className="modal">
                     <div className="modal-content">
-                        <h3>Correo Enviado Exitosamente</h3>
                         <p>Tu inscripción ha sido procesada correctamente.</p>
                         <p>El número de trámite es: {numeroTramite}</p>
-                        <button className='anexo-button' onClick={generarPDF}>Generar PDF</button>
-                        <button className='anexo-button' onClick={handleEnviarCorreo}>Enviar Correo</button>
-                        <button className='anexo-button' onClick={() => setModales({ ...modales, exito: false })}>Cerrar</button>
+                        <div className='modal-buttons'>
+                            <button className='anexo-button' onClick={generarPDF}>Generar PDF</button>
+                            <button className='anexo-button' onClick={handleEnviarCorreo}>Enviar Correo</button>
+                        </div>
+                        <button className='anexo-button-close' onClick={() => setModales({ ...modales, exito: false })}>X</button>
+                    </div>
+                </div>
+            )}
+            {/* Modal de éxito PDF */}
+            {modalPDFExito && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>PDF Generado</h3>
+                        <p>El archivo PDF fue generado y descargado correctamente.</p>
+                        <button className='anexo-button' onClick={handleCerrarPDFExito}>Cerrar</button>
                     </div>
                 </div>
             )}
 
+            {/* Modal de éxito Correo */}
+            {modalCorreoExito && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Correo Enviado</h3>
+                        <p>El correo fue enviado exitosamente a la institución.</p>
+                        <button className='anexo-button' onClick={() => setModalCorreoExito(false)}>Cerrar</button>
+                    </div>
+                </div>
+            )}
+
+            {modalExpiracionVisible && (
+                <div className="modal-login">
+                    <div className="modal-content-login">
+                        <h2>Sesión expirada 🕒</h2>
+                        <p>Ha pasado demasiado tiempo desde que iniciaste sesión.<br />
+                            Tu sesión se cerrará, pero podrás volver a iniciar sesión nuevamente.
+                        </p>
+                        <button className="login-button" onClick={handleExpiracionAceptar}>
+                            Volver a Iniciar Sesión
+                        </button>
+                    </div>
+                </div>
+            )}
+            {inscripcionExistente && tramiteExistente && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h3>Ya estás inscripto 📌</h3>
+                        <p>No podés volver a inscribirte.</p>
+                        <p><strong>Número de trámite:</strong> {numeroTramite}</p>
+                        <div className="modal-buttons">
+                            <button className="anexo-button" onClick={handleGenerarPDFDesdeModal}>Descargar PDF</button>
+                            <button className="anexo-button" onClick={() => setInscripcionExistente(false)}>Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
 export default AnexoIIComponent;

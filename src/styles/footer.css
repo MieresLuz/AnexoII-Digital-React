@@ -1,14 +1,42 @@
 footer {
     text-shadow: 0 2px 3px black;
-    background: #7b7b7d68;
-    color: #333;
+    background-color: #000000;
+    color: #ffffff;
     width: 100%;
-    height: 10vh;
+    height: 220px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 footer p{
     font-size: 1.2rem;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.social-icons img {
+    width: 60px;
+    /* Ajusta el tamaño de los iconos */
+    height: auto;
+    border-radius: 100%;
+    height: auto;
+    /* Mantiene la proporción del logo */
+    transition: transform 0.4s ease;
+    /* Transición suave */
+}
+
+.social-icons img:hover {
+
+    transform: scale(1.5);
+    box-shadow: 0 8px 16px rgba(0, 0, 1, 0.2);
+    /* Agrega una sombra */
+
 }

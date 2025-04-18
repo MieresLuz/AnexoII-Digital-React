@@ -17,11 +17,22 @@
 /* Estilos de Contenedores de Formularios */
 .anexo-fieldset {
     margin-bottom: 25px;
-    padding: 20px;
-    border: 1px solid #ced4da;
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+}
+
+.anexoII-form{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .anexo-legend {
@@ -29,22 +40,20 @@
     padding: 0 15px;
     color: #343a40;
     font-size: 1.1em;
+    width: 100%;
 }
 
 /* Etiquetas de los campos de formulario */
 .anexo-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #343a40;
-    font-size: 1em;
-    font-weight: 500;
+    width: 100%;
 }
 
 /* Estilos de los campos de formulario */
 .anexo-input[type="text"],
 .anexo-input[type="email"],
 .anexo-select {
-    width: calc(100% - 20px);
+    width: 100%;
+    height: 50px;
     padding: 10px;
     margin-bottom: 15px;
     box-sizing: border-box;
@@ -54,6 +63,7 @@
     color: #495057;
     background-color: #fff;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .anexo-input[type="text"]:focus,
@@ -75,7 +85,17 @@
     font-size: 1.1em;
     font-weight: 500;
     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.anexo-button-close{
+    position: relative;
+    bottom: 170px;
+    left: 130px;
+    background: none;
+    color: black;
+    font-weight: bold;
+    box-shadow: none;
+
 }
 
 .anexo-button:hover {
@@ -88,25 +108,73 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
 
-/* Estilos de las Tablas */
-table {
+.materiasContainer{
     width: 100%;
-    border-collapse: collapse;
-    table-layout: auto;
 }
 
+/* Scroll horizontal para tablas grandes en pantallas pequeñas */
+.tabla-scroll {
+    width: 100%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Opcional: para que no se desborde el contenido */
+.anexo-table {
+    min-width: 750px; /* o lo que necesites */
+    border-collapse: collapse;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.check-table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 100px;
+}
+
+
 th,
-td {
+td, tr {
     border: 1px solid #ddd;
-    padding: 8px;
-    vertical-align: top;
+    vertical-align: center;
     text-align: left;
+    font-size: 15px;
+    padding: 5px;
 }
 
 th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
+
+.materias-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.check-nom-mat{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.materia-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
 
 /* Estilos de Confirmación */
 .confirmation {
@@ -116,6 +184,7 @@ th {
     background-color: #e7f8ec;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .confirmation h2 {
@@ -130,21 +199,40 @@ th {
     top: 0;
     left: 0;
     width: 100%;
+    height: 300px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9986;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+
 }
 
 .modal-content {
+    position: absolute;
     background-color: white;
-    padding: 20px;
     border-radius: 8px;
     text-align: center;
-    max-width: 400px;
+    max-width: 300px;
     width: 100%;
+    height: 210px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 
 .close {
@@ -193,8 +281,10 @@ li {
 
 /* Estilo para las Etiquetas y Campos de Materias */
 .anexo-label {
-    display: block;
-    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     font-weight: bold;
 }
 
@@ -210,8 +300,72 @@ select {
     background: none;
     color: black;
     width: 100%;
+    height: 50px;
     padding: 8px;
     margin-bottom: 15px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
+
+@media screen and (min-width: 375px) and (max-width: 424px) {
+    .modal-content {
+      max-width: 350px;
+    }
+
+    .anexo-button-close {
+        left: 150px;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px) {
+    .modal-content {
+        max-width: 400px;
+    }
+
+    .anexo-button-close {
+        left: 175px;
+    }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .modal-content {
+        max-width: 450px;
+    }
+
+    .anexo-button-close {
+        left: 200px;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .modal-content {
+        max-width: 450px;
+    }
+
+    .anexo-button-close {
+        left: 200px;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2559px) {
+    .modal-content {
+        max-width: 450px;
+    }
+
+    .anexo-button-close {
+        left: 200px;
+    }
+}
+
+@media screen and (min-width: 2560px) and (max-width: 3749px) {
+    .modal-content {
+        max-width: 450px;
+    }
+
+    .anexo-button-close {
+        left: 200px;
+    }
+}
+
