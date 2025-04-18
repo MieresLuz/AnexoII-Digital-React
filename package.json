@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run copy-to-backend",
+    "copy-to-backend": "rmdir /S /Q \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\" && mkdir \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\" && xcopy /E /I /Y dist\\* \"C:\\Users\\MasterPC\\Documents\\ProyectosPersonales\\AnexoIIDigital-BACKEND\\AnexoIIDigital\\src\\main\\resources\\static\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
