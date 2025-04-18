@@ -155,9 +155,28 @@ h1 {
     background-color: var(--secondary-color);
 }
 
+.error-text {
+    color: red;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+
+.error-list {
+    color: red;
+    font-size: 0.9em;
+    margin: 5px 0 10px 20px;
+    list-style-type: disc;
+}
+
+.registro-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
 @media screen and (min-width: 375px) and (max-width: 424px) {
     .modal-registro {
-      left: 9.5%;
+        left: 9.5%;
     }
 }
 
@@ -174,7 +193,7 @@ h1 {
         width: 60%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -185,7 +204,7 @@ h1 {
         width: 50%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -196,7 +215,7 @@ h1 {
         width: 38%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -208,7 +227,7 @@ h1 {
         top: 400px;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }

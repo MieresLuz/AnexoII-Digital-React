@@ -61,7 +61,7 @@ h1 {
     background: var(--primary-color);
     border: none;
     position: absolute;
-    right: 0px;
+    right: 10px;
     top: 407px;
 
 }
@@ -70,6 +70,7 @@ h1 {
     border-radius: 100%;
     cursor: pointer;
     background: none;
+    color: black;
 }
 
 .profile-section button img {

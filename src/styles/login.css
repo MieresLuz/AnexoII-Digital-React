@@ -154,7 +154,7 @@ h1 {
     text-align: center;
 }
 
-.login-button{
+.login-button {
     padding: 12px 20px;
     background-color: var(--primary-color);
     color: white;
@@ -189,9 +189,30 @@ h1 {
     z-index: 999;
 }
 
+.error-text {
+    color: red;
+    font-size: 0.9em;
+    margin: 5px 0;
+}
+
+.error-list {
+    color: red;
+    font-size: 0.9em;
+    margin: 5px 0 10px 20px;
+    list-style-type: disc;
+}
+
+.login-button:disabled,
+.login-button.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+
 @media screen and (min-width: 375px) and (max-width: 424px) {
     .modal-login {
-      left: 9.5%;
+        left: 9.5%;
     }
 }
 
@@ -208,7 +229,7 @@ h1 {
         width: 60%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -219,7 +240,7 @@ h1 {
         width: 50%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -230,7 +251,7 @@ h1 {
         width: 38%;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
@@ -242,8 +263,7 @@ h1 {
         top: 400px;
     }
 
-    .container{
+    .container {
         width: 50%;
     }
 }
-  

@@ -24,6 +24,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    overflow-x: hidden;
 
 }
 
@@ -347,6 +348,15 @@ select {
     .anexo-button-close {
         left: 200px;
     }
+
+    .anexoII-form{
+        width: 70%;
+    }
+
+    .anexo-table{
+        min-width: 950px;
+        overflow-x: hidden;
+    }
 }
 
 @media screen and (min-width: 1440px) and (max-width: 2559px) {
@@ -357,6 +367,12 @@ select {
     .anexo-button-close {
         left: 200px;
     }
+
+    .anexoII-form{
+        width: 60%;
+        overflow-x: hidden;
+    }
+
 }
 
 @media screen and (min-width: 2560px) and (max-width: 3749px) {
@@ -366,6 +382,11 @@ select {
 
     .anexo-button-close {
         left: 200px;
+    }
+
+    .anexoII-form{
+        width: 60%;
+        overflow-x: hidden;
     }
 }
 
